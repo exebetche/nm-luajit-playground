@@ -458,8 +458,10 @@ function ev.Signal(on_signal_fn, signal_number)
     return ev_signal
 end
 
---- io = ev.IO(on_io, file_descriptor, revents)
-function ev.IO(on_io_fn, file_descriptor, revents)
+--- io = ev.IO.new(on_io, file_descriptor, revents)
+ev.IO = {}
+ev.IO.__index = ev.IO
+function ev.IO.new(on_io_fn, file_descriptor, revents)
     assert( on_io_fn, "on_io_fn cannot be nil" )
     local ev_io = ev_io_t()
     ev_io.active = 0
