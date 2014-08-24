@@ -483,8 +483,9 @@ function ev.Idle(on_idle_fn)
     return ev_idle
 end
 
---TODO Child, Stat Periodic, Prepare, Check, Embed, Async, Clenaup, Fork
+ev.defaultLoop = libev.ev_default_loop( libev.EVFLAG_AUTO )
 
+--TODO Child, Stat Periodic, Prepare, Check, Embed, Async, Clenaup, Fork
 
 -- Return the Public API
 return ev
