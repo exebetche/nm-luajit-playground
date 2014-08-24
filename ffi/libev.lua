@@ -332,6 +332,10 @@ ffi.metatype( ev_signal_t, {
 local ev_io_t = ffi.typeof('ev_io')
 ffi.metatype( ev_io_t, {
     __index = {
+        -- io:is_active()
+        is_active = function( ev_io )
+                return ev_io.active ~= 0
+            end,
         -- io:start(loop [, is_daemon])
         start = function( ev_io, ev_loop, is_daemon )
                 assert( ffi.istype(ev_loop_t, ev_loop), "loop is not an ev_loop" )
