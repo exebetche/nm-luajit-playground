@@ -267,6 +267,10 @@ ffi.metatype( ev_loop_t, {
 local ev_timer_t = ffi.typeof('ev_timer')
 ffi.metatype( ev_timer_t, {
     __index = {
+        -- timer:is_active()
+        is_active = function( ev_timer )
+                return ev_timer.active ~= 0
+            end,
         -- timer:start(loop [, is_daemon])
         start = function( ev_timer, ev_loop, is_daemon )
                 assert( ffi.istype(ev_loop_t, ev_loop), "loop is not an ev_loop" )
@@ -314,6 +318,10 @@ ffi.metatype( ev_timer_t, {
 local ev_signal_t = ffi.typeof('ev_signal')
 ffi.metatype( ev_signal_t, {
     __index = {
+        -- signal:is_active()
+        is_active = function( ev_signal )
+                return ev_signal.active ~= 0
+            end,
         -- signal:start(loop [, is_daemon])
         start = function( ev_signal, ev_loop, is_daemon )
                 assert( ffi.istype(ev_loop_t, ev_loop), "loop is not an ev_loop" )
@@ -358,6 +366,10 @@ ffi.metatype( ev_io_t, {
 local ev_idle_t = ffi.typeof('ev_idle')
 ffi.metatype( ev_idle_t, {
     __index = {
+        -- idle:is_active()
+        is_active = function( ev_idle )
+                return ev_idle.active ~= 0
+            end,
         -- idle:start(loop [, is_daemon])
         start = function( ev_idle, ev_loop, is_daemon )
                 assert( ffi.istype(ev_loop_t, ev_loop), "loop is not an ev_loop" )
@@ -434,7 +446,9 @@ function ev.Loop( flags )
 end
 
 ---timer = ev.Timer.new(on_timeout, after_seconds [, repeat_seconds])
-function ev.Timer( on_timeout_fn, after_seconds, repeat_seconds )
+ev.Timer = {}
+ev.Timer.__index = ev.Timer
+function ev.Timer.new( on_timeout_fn, after_seconds, repeat_seconds )
     assert( on_timeout_fn, "on_timeout_fn cannot be nil" )
     repeat_seconds = repeat_seconds or 0
     assert( after_seconds > 0, "after_seconds must be > 0" )
@@ -451,7 +465,9 @@ function ev.Timer( on_timeout_fn, after_seconds, repeat_seconds )
 end
 
 --sig = ev.Signal.new(on_signal, signal_number)
-function ev.Signal(on_signal_fn, signal_number)
+ev.Signal = {}
+ev.Signal.__index = ev.Signal
+function ev.Signal.new(on_signal_fn, signal_number)
     assert( on_signal_fn, "on_signal_fn cannot be nil" )
     local ev_signal = ev_signal_t()
     ev_signal.active = 0
