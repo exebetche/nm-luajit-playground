@@ -495,7 +495,9 @@ function ev.IO.new(on_io_fn, file_descriptor, revents)
 end
 
 --- idle = ev.Idle.new(on_idle)
-function ev.Idle(on_idle_fn)
+ev.Idle = {}
+ev.Idle.__index = ev.Idle
+function ev.Idle.new(on_idle_fn)
     assert( on_idle_fn, "on_idle_fn cannot be nil" )
     local ev_idle = ev_idle_t()
     ev_idle.active = 0
