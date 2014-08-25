@@ -439,11 +439,15 @@ function ev.sleep( interval )
     libev.ev_sleep( interval )
 end
 
--- loop = ev.Loop()
-function ev.Loop( flags )
+-- loop = ev.Loop.new()
+ev.Loop = {}
+ev.Loop.__index = ev.Loop
+function ev.Loop.new( flags )
     flags = flags or libev.EVFLAG_AUTO
     return libev.ev_loop_new( flags )
 end
+
+ev.Loop.default = libev.ev_default_loop( libev.EVFLAG_AUTO )
 
 ---timer = ev.Timer.new(on_timeout, after_seconds [, repeat_seconds])
 ev.Timer = {}
@@ -506,8 +510,6 @@ function ev.Idle.new(on_idle_fn)
     ev_idle.cb = on_idle_fn
     return ev_idle
 end
-
-ev.defaultLoop = libev.ev_default_loop( libev.EVFLAG_AUTO )
 
 --TODO Child, Stat Periodic, Prepare, Check, Embed, Async, Clenaup, Fork
 
